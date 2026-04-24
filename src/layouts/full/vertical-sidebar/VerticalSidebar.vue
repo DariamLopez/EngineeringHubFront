@@ -2,7 +2,7 @@
 import { ref, shallowRef, computed, onMounted } from 'vue';
 import { useCustomizerStore } from '@/stores/customizer';
 import { useSelectedStore } from '@/stores/selectedItems';
-import { sidebarArtifact, sidebarItem, sidebarModule } from './sidebarItem';
+import { menu, sidebarArtifact, sidebarItem, sidebarModule } from './sidebarItem';
 import { ModulesItems } from '@/_mockApis/dataTable';
 
 import NavItem from './NavItem/index.vue';
@@ -16,7 +16,7 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const customizer = useCustomizerStore();
-const sidebarMenu = shallowRef(sidebarItem);
+const sidebarMenu = shallowRef<menu[]>(sidebarItem);
 const authStore = useAuthStore();
 const selectedStore = useSelectedStore();
 </script>

@@ -8,7 +8,7 @@ import { useSelectedStore } from '@/stores/selectedItems';
 import { typeArtifact } from '@/enum/enum';
 import { useRouter } from 'vue-router';
 
-const form_artifact = ref(null);
+const form_artifact = ref<InstanceType<typeof FormArtifact> | null>(null);
 const router = useRouter();
 const selectedStore = useSelectedStore();
 const page = ref({ title: 'Artifact Form' });
@@ -35,14 +35,14 @@ const breadcrumbs = ref([
     }
 ]);
 
-const project_name = ref(selectedStore.project.name || '');
+const project_name = ref(selectedStore.project?.name || '');
 const type = ref(selectedStore.artifact);
 
 const submit_loading = ref(false);
 
 const onCreate = async () => {
     submit_loading.value = true;
-    await form_artifact.value.handleSubmit();
+    await form_artifact.value?.handleSubmit();
     submit_loading.value = false;
 };
 </script>

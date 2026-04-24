@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
-import { BasicDatatables, UppercaseFilter,Filtrable } from '@/_mockApis/components/datatable/dataTable';
+const BasicDatatables: any[] = [];
+const UppercaseFilter: any[] = [];
+const Filtrable: any[] = [];
 const page = ref({ title: 'Data Table Filtering' });
 const breadcrumbs = ref([
     {

@@ -60,6 +60,7 @@ export interface menu {
     disabled?: boolean;
     type?: string;
     subCaption?: string;
+    beforeEnter?: () => boolean | string;
 }
 
 export const sidebarItem = [
