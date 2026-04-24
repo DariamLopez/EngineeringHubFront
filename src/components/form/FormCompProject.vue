@@ -31,7 +31,7 @@ const handleSubmit = async () => {
                 description: description.value
             });
             console.log('Project created:', response.data);
-            router.push('/TableProject');
+            router.push('/');
         } catch (error) {
             console.error('Error creating project:', error.response?.data || error.message);
         }
