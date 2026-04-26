@@ -32,7 +32,6 @@ const getArtifact = async () => {
             }
         })
         .then((res) => {
-            //console.log('Artifact fetched:', res.data);
             return res.data[0];
         })
         .catch((err) => {
@@ -45,26 +44,22 @@ const getModule = async (id) => {
     const response = await axiosServices
         .get(`/modules/${id}`)
         /* .then((res) => {
-            console.log('Module fetched:', res.data);
             return res.data[0];
         }) */
         .catch((err) => {
             console.error('Error fetching module:', err);
             return null;
         });
-    console.log('Module response:', response.data);
+    //console.log('Module response:', response.data);
     return response.data;
 };
 onMounted(async () => {
     loading.value = true;
-    //console.log('Project ', selectedStore.project);
     if (selectedStore.selectData === 'artifact') {
         selectedStore.artifact.content = await getArtifact();
-        console.log('Selected artifact content:', selectedStore.artifact);
     }
     if (selectedStore.selectData === 'module') {
         selectedStore.module.content = await getModule(selectedStore.module.id);
-        console.log('Selected module content:', selectedStore.module);
     }
     loading.value = false;
 });
@@ -72,10 +67,8 @@ onUpdated(async () => {
     loading.value = true;
     if (selectedStore.selectData === 'artifact') {
         selectedStore.artifact.content = await getArtifact();
-        console.log('Selected artifact content updated:', selectedStore.artifact);
     } else if (selectedStore.selectData === 'module') {
         selectedStore.module.content = await getModule(selectedStore.module.id);
-        console.log('Selected module content updated:', selectedStore.module);
     }
     loading.value = false;
 });

@@ -174,20 +174,16 @@ const delete_dialog = ref(false);
 const selectedProject = ref({});
 
 onMounted(async () => {
-    console.log('User', authStore.user);
     projects.value = await getProjects();
     loading.value = false;
 });
 // Funciones
 const deleteDialog = async (project) => {
-    console.log('Project selected for deletion:', project);
     selectedProject.value = project;
     delete_dialog.value = true;
 };
 async function getProjects() {
     const response = await axiosServices.get('/projects');
-    /* console.log('Projects fetched:', response.data); */
-    /* projects.value = response.data; */
     return response.data;
 }
 const getModules = async (projectId) => {
@@ -209,7 +205,6 @@ const getModules = async (projectId) => {
 };
 function openEditDialog(item) {
     selectedProject.value = { ...item };
-    console.log('Selected project for editing:', selectedProject.value);
     editDialog.value = true;
 }
 function closeDialog() {
@@ -263,7 +258,6 @@ const goToDetail = async (item) => {
         { header: 'Modules' },
         ...modulesList.map((m) => (m ? { module: { id: m.id, name: m.name }, icon: markRaw(CircleIcon) } : null)).filter(Boolean)
     ];
-    console.log('Modules for sidebar:', sideModules);
     selectedStore.saveModules(sideModules);
     selectedStore.selectProject(item);
     loading_details.value = null;

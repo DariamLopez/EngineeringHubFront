@@ -57,17 +57,7 @@ const canValidate = () => {
 const handleSubmit = async () => {
     const { valid } = await formRef.value?.validate();
     console.log('Form validation result:', valid);
-    if (!valid) {
-        console.log('Invalid form', valid);
-        return false;
-    }
-    /* if (!canValidate()) {
-        console.log('Module does not meet validation rules');
-        return;
-    } */
-    /* inputs.value = inputs.value.filter((v) => v !== '');
-    outputs.value = outputs.value.filter((v) => v !== '');
-    data_structure.value = data_structure.value.filter((v) => v !== ''); */
+    if (!valid) return false;
     const status = selectedStore.module.content.status || 'draft';
     let module_traited = {
         status: status,
@@ -109,11 +99,10 @@ const getModules = async () => {
     return response;
 };
 const updateModule = async (module) => {
-    console.log('module to update:', module);
     const response = await axiosServices
         .put(`/modules/${module.id}`, module)
         .then((res) => {
-            console.log('Module updated:', res.data);
+            //console.log('Module updated:', res.data);
             return res.data;
         })
         .catch((err) => {

@@ -68,9 +68,7 @@ const selectedProject = ref(null);
 
 onMounted(async () => {
     audits.value = await getAudit(paginate.value.page, paginate.value.itemsPerPage);
-    //console.log('Audit Events fetched:', auditData);
     projects.value.push(...(await getProjects()));
-    console.log('Projects fetched:', projects.value);
     loading_table.value = false;
 });
 
@@ -84,30 +82,24 @@ const getAudit = async (page, itemsPerPage, project = null) => {
             }
         })
         .then((res) => {
-            //console.log('Raw audit events:', res.data);
             paginate.value.totalItems = res.data.total || 0;
             res.data = res.data.data.map((item) => {
                 return {
                     ...item,
-                    /* after_json: item.after_json ? JSON.parse(item.after_json) : null,
-                    before_json: item.before_json ? JSON.parse(item.before_json) : null, */
                     created_at: item.created_at ? formatDate(item.created_at) : ''
                 };
             });
-            //console.log('Parsed audit events:', res.data);
             return res.data;
         })
         .catch((error) => {
             console.error('Error fetching audit events:', error);
         });
-    console.log('Audit events response:', response);
     return response;
 };
 const getProjects = async () => {
     const response = await axiosServices
         .get('/projects')
         .then((res) => {
-            //console.log('Projects fetched:', res.data);
             res = res.data;
             return res;
         })
@@ -117,7 +109,6 @@ const getProjects = async () => {
     return response;
 };
 const onTableUpdate = async ({ page, itemsPerPage }) => {
-    //console.log('Table options updated:', options);
     loading_paginate.value = true;
     paginate.value.page = page;
     paginate.value.itemsPerPage = itemsPerPage;
@@ -125,24 +116,15 @@ const onTableUpdate = async ({ page, itemsPerPage }) => {
     loading_paginate.value = false;
 };
 const onProjectSelected = async (projectId) => {
-    //console.log('Selected project ID:', projectId);
     loading_paginate.value = true;
     paginate.value.page = 1; // Reset to first page when changing project
     audits.value = await getAudit(paginate.value.page, paginate.value.itemsPerPage, projectId);
     loading_paginate.value = false;
 };
 const openDialog = (item) => {
-    console.log('Open dialog with selected item:', item);
     selectedItem.value = item;
     jsonDialog.value = true;
 };
-/* watch(
-    paginate,
-    (newValue) => {
-        console.log('Pagination changed:', newValue);
-    },
-    { deep: true }
-); */
 </script>
 
 <template>

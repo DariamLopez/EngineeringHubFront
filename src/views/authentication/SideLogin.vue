@@ -2,6 +2,9 @@
 import Logo from '@/layouts/full/logo/LogoDark.vue';
 /* Login form */
 import LoginForm from '@/components/auth/LoginForm.vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
+
+const display = useDisplay();
 </script>
 
 <template>
@@ -15,8 +18,8 @@ import LoginForm from '@/components/auth/LoginForm.vue';
                 </div>
             </v-col>
             <v-col cols="12" lg="5" xl="4" class="d-flex align-center justify-center bg-surface">
-                <div class="mt-xl-0 mt-5 mw-100">
-                    <h2 class="text-h3 font-weight-semibold mb-2">Welcome</h2>
+                <div :style="{ minWidth: display.mdAndUp ? '400px' : '100%' }" class="mt-xl-0 mt-5 mw-100">
+                    <h2 class="text-h3 font-weight-semibold mb-2">Welcome to EngineeringHub</h2>
                     <LoginForm />
                     <!-- <h6 class="text-h6  text-medium-emphasis  d-flex align-center mt-6 font-weight-medium">
                         New to Flexy?

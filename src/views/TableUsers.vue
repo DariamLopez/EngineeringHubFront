@@ -32,7 +32,6 @@ onMounted(async () => {
     loading.value = true;
     try {
         users.value = await getUsers();
-        console.log('Users fetched successfully:', users.value);
     } catch (error) {
         console.error('Error fetching users:', error);
     } finally {
@@ -40,7 +39,6 @@ onMounted(async () => {
     }
 });
 const deleteDialog = async (user) => {
-    console.log('User selected for deletion:', user);
     userSelected.value = user;
     delete_dialog.value = true;
 };
@@ -49,7 +47,6 @@ const getUsers = async () => {
     const response = await axiosServices.get('/users').then((res) => {
         //console.log('API response for users:', res.data);
         res.data.forEach((user) => {
-            //console.log('Processing user:', user);
             user.role = user.roles && user.roles.length > 0 ? user.roles[0].name : 'No role';
         });
         return res;

@@ -25,7 +25,8 @@ const loadingRoles = ref(false);
 const handleSubmit = () => {
     const isValid = formRef.value.isValid;
     if (!isValid) {
-        console.log('Invalid form');
+        //console.log('Invalid form');
+        return
     } else {
         submitUser();
     }
@@ -36,7 +37,7 @@ const getRoles = async () => {
         console.error('Error fetching roles:', error);
         return { data: [] }; // Return empty array on error
     });
-    console.log('Roles fetched:', response.data);
+    //console.log('Roles fetched:', response.data);
     return response.data;
 };
 const submitUser = async () => {
@@ -48,8 +49,7 @@ const submitUser = async () => {
             password: props.is_create ? password.value : null,
             roles: roles.value
         });
-        console.log('User created:', response.data);
-        // Optionally, navigate back or reset form here
+        //console.log('User created:', response.data);
     } catch (error) {
         console.error('Error creating user:', error.response?.data || error.message);
     } finally {

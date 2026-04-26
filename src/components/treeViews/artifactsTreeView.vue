@@ -6,12 +6,9 @@ const props = defineProps({
     treeData: Object
 });
 const selectedStore = useSelectedStore();
-onMounted(() => {
-    console.log('Tree data received in ArtifactsTreeView:', props.treeData);
-});
+
 const treeItems = computed(() => {
     if (!props.treeData.content) return [];
-    console.log('Computing tree items for artifact:', props.treeData.title);
     const content = props.treeData.content.content_json;
     const items = [];
 

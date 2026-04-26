@@ -9,11 +9,8 @@ const props = defineProps({ item: Object, level: Number });
 const handleClick = () => {
     selectedStore.selectArtifact(props.item);
     selectedStore.selectData = 'artifact';
-    console.log(selectedStore.selectData);
+    //console.log(selectedStore.selectData);
 };
-onMounted(() => {
-    /* console.log('Item selected', props.item); */
-});
 </script>
 
 <template>

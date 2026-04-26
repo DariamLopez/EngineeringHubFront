@@ -62,7 +62,6 @@ export const useSelectedStore = defineStore('select', {
             router.push(`/DetailsProject/${this.project?.name}/${this.artifact.url}`);
         },
         selectArtifact(artifact: { title: string; to: string }) {
-            console.log('Selected artifact:', artifact);
             this.artifact.title = artifact.title;
             this.artifact.url = artifact.to;
             saveToSession(this.$state);
@@ -74,7 +73,6 @@ export const useSelectedStore = defineStore('select', {
             router.push(`/DetailsProject/${this.project?.name}/${module.name}`)
         },
         saveModules(modules: []) {
-            console.log('Saving modules:', modules);
             this.modules = modules;
             saveToSession(this.$state);
         },

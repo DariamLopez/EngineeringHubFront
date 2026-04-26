@@ -4,9 +4,6 @@ import { computed, onBeforeMount, onMounted } from 'vue';
 const props = defineProps({
     treeData: Object
 });
-onBeforeMount(() => {
-    console.log('Tree data received in ModulesTreeView:', props.treeData);
-});
 const treeItems = computed(() => {
     if (!props.treeData) return [];
     const module = props.treeData;

@@ -56,16 +56,13 @@ async function save() {
     dialog.value = false;
     const refreshed = await readArtifact()
     if (refreshed) {
-        console.log('Artifact refreshed after update:', refreshed);
         selectedStore.artifact.content = refreshed;
     }
 }
 
 const onClose = async () => {
-    console.log('onupdate');
     const refreshed = await readArtifact();
     if (refreshed) {
-        console.log('Artifact refreshed after update:', refreshed);
         selectedStore.artifact.content = refreshed;
     }
     dialog.value = false

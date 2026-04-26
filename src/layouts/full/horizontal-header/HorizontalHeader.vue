@@ -15,7 +15,6 @@ const customizer = useCustomizerStore();
 const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
 watch(priority, (newPriority) => {
-    // yes, console.log() is a side effect
     priority.value = newPriority;
 });
 

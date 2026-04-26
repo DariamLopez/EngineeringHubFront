@@ -79,7 +79,7 @@ const initContentJson = async (typeName) => {
         case 'Module Matrix':
             content_loading.value = true;
             api_domains.value = await getArtifact('big_picture').then((artifact) => artifact?.content_json?.impacted_domains || []);
-            console.log('api_domains', api_domains.value);
+            //console.log('api_domains', api_domains.value);
             content_loading.value = false;
             if (props.is_create) return { modules_overview: [] };
             else return selectedStore.artifact.content.content_json;
@@ -99,7 +99,7 @@ const initContentJson = async (typeName) => {
         case 'Phase Scope':
             content_loading.value = true;
             api_modules.value = await getModules();
-            console.log('Modules fetched for Phase Scope:', api_modules.value);
+            //console.log('Modules fetched for Phase Scope:', api_modules.value);
             content_loading.value = false;
             if (props.is_create)
                 return {
@@ -125,7 +125,6 @@ const handleSubmit = async () => {
             if (props.is_create) {
                 const domains = await createDomains(content_json.value.impacted_domains);
                 content_json.value.impacted_domains = domains.map((d) => Number(d.id)).filter((id) => !Number.isNaN(id));
-                console.log('Contenido JSON actualizado con IDs de domains:', content_json.value);
                 await createArtifact();
             } else {
                 await updateMassiveDomains(content_json.value.impacted_domains.filter((d) => d.id));
@@ -145,7 +144,6 @@ const handleSubmit = async () => {
             } else {
                 //await updateMassiveDomains(content_json.value.domains.map((id) => ({ id })));
                 await updateMassiveDomains(api_domains.value);
-                console.log('Contenido JSON actualizado con IDs de domains:', content_json.value);
                 content_json.value = {
                     domains: api_domains.value.map((d) => Number(d.id)).filter((id) => !Number.isNaN(id))
                 };
@@ -160,7 +158,6 @@ const handleSubmit = async () => {
                     return;
                 }
                 const modules = await createModules(content_json.value.modules_overview);
-                console.log('Modules creados con IDs:', modules);
                 content_json.value.modules_overview = modules.modules.map((m) => Number(m.id)).filter((id) => !Number.isNaN(id));
                 const existingModuleItems = Array.isArray(selectedStore.modules) ? selectedStore.modules.filter((m) => !m.header) : [];
                 const newSidebarModules = [
@@ -173,17 +170,12 @@ const handleSubmit = async () => {
             } else {
                 const modulesToUpdate = content_json.value.modules_overview.filter((m) => m.id);
                 const modulesToCreate = content_json.value.modules_overview.filter((m) => !m.id);
-
-                console.log('Modules to update:', modulesToUpdate);
-                console.log('Modules to create:', modulesToCreate);
                 if (modulesToUpdate.length > 0) {
                     await updateMassiveModules(modulesToUpdate);
-                    console.log('Modules actualizados con IDs:', modulesToUpdate);
                 }
 
                 if (modulesToCreate.length > 0) {
                     const createdModules = await createModules(modulesToCreate);
-                    console.log('Modules creados con IDs:', createdModules);
                     content_json.value.modules_overview.push(
                         ...createdModules.modules.map((m) => Number(m.id)).filter((id) => !Number.isNaN(id))
                     );
@@ -201,7 +193,6 @@ const handleSubmit = async () => {
                     selectedStore.saveModules(updatedSidebarModules);
                 }
 
-                console.log('Contenido JSON actualizado con IDs de modules:', content_json.value);
                 content_json.value.modules_overview = content_json.value.modules_overview
                     .map((d) => (typeof d === 'object' ? Number(d.id) : Number(d)))
                     .filter((id) => !Number.isNaN(id));
@@ -241,7 +232,7 @@ const createArtifact = async () => {
             snackbar.value = true;
             return;
         });
-    console.log('Artifact creado:', response.data);
+    //console.log('Artifact creado:', response.data);
 };
 const getArtifact = async (type) => {
     const response = await axiosServices
@@ -252,7 +243,7 @@ const getArtifact = async (type) => {
             }
         })
         .then((res) => {
-            console.log('Artifact fetched:', res.data);
+            //console.log('Artifact fetched:', res.data);
             return res.data[0];
         })
         .catch((err) => {
@@ -276,7 +267,7 @@ const updateArtifact = async () => {
             snackbar.value = true;
             return;
         });
-    console.log('Artifact actualizado:', response.data);
+    //console.log('Artifact actualizado:', response.data);
 };
 const getDomains = async () => {
     const response = await axiosServices
@@ -293,7 +284,6 @@ const getDomains = async () => {
 };
 const createDomains = async (new_domains = []) => {
     if (new_domains.length === 0) return [];
-    console.log('Contenido JSON para domains:', content_json.value.impacted_domains);
     const domains = await axiosServices
         .post('/domains/massive', {
             project_id: selectedStore.project.id,
@@ -303,11 +293,10 @@ const createDomains = async (new_domains = []) => {
             console.log('Error al crear domains:', error);
             return;
         });
-    console.log('Domains creados:', domains);
+    //console.log('Domains creados:', domains);
     return domains.data;
 };
 const updateMassiveDomains = async (domains = []) => {
-    console.log('Contenido JSON para updateMassiveDomains:', domains);
     const updated_domains = await axiosServices
         .put('/domains/massive', {
             project_id: selectedStore.project.id,
@@ -318,7 +307,7 @@ const updateMassiveDomains = async (domains = []) => {
             console.error(`Error updating domain`, error);
         });
 
-    console.log('Domains actualizados:', updated_domains);
+    //console.log('Domains actualizados:', updated_domains);
     return updated_domains;
 };
 const deleteMassiveDomains = async (domainIds = []) => {
@@ -349,7 +338,6 @@ const deleteModule = async (m, i) => {
     loading_delete.value = null;
 };
 const createModules = async (modules = []) => {
-    console.log('Contenido JSON para modules:', modules);
     const createdModules = await axiosServices
         .post('/modules/massive', {
             project_id: selectedStore.project.id,
@@ -359,11 +347,10 @@ const createModules = async (modules = []) => {
             console.log('Error al crear modules:', error);
             return;
         });
-    console.log('Modules creados:', createdModules);
+    //console.log('Modules creados:', createdModules);
     return createdModules.data;
 };
 const updateMassiveModules = async (modules = []) => {
-    console.log('Contenido JSON para updateMassiveModules:', modules);
     const updated_modules = await axiosServices
         .put('/modules/massive', {
             project_id: selectedStore.project.id,
@@ -373,7 +360,7 @@ const updateMassiveModules = async (modules = []) => {
             console.error(`Error updating modules`, error);
         });
 
-    console.log('Modules actualizados:', updated_modules);
+    //console.log('Modules actualizados:', updated_modules);
     return updated_modules;
 };
 const getModules = async () => {

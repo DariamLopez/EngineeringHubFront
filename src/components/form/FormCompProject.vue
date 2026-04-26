@@ -22,7 +22,8 @@ const formRef = ref(null);
 const handleSubmit = async () => {
     const isValid = formRef.value.isValid;
     if (!isValid) {
-        console.log('Invalid form');
+        //console.log('Invalid form');
+        return
     } else {
         try {
             const response = await axiosServices.post('/projects', {
@@ -30,7 +31,7 @@ const handleSubmit = async () => {
                 client_name: client_name.value,
                 description: description.value
             });
-            console.log('Project created:', response.data);
+            //console.log('Project created:', response.data);
             router.push('/');
         } catch (error) {
             console.error('Error creating project:', error.response?.data || error.message);

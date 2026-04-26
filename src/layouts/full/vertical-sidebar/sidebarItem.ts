@@ -15,7 +15,7 @@ type SidebarModuleItem = { module: object; icon: TablerIconComponent } | { heade
 
 const modules = computed(() => {
     if (selectedStore.project) {
-        console.log('Selected project modules:', selectedStore.project);
+        //console.log('Selected project modules:', selectedStore.project);
         return selectedStore.project.modules
             .map((id) => {
                 const module = ModulesItems.find((m) => m.id === id);
@@ -40,7 +40,7 @@ export const sidebarModule = computed<SidebarModuleItem[]>(() => {
                 icon: TablerIconComponent;
             }[])
         ];
-        console.log('sidebarModule:', modulesList);
+        //console.log('sidebarModule:', modulesList);
         return modulesList;
     }
     return [];

@@ -12,16 +12,7 @@ const props = defineProps({ item: Object, level: Number });
 const handleClick = () => {
     selectedStore.selectModule(props.item.module);
     selectedStore.selectData = 'module';
-    /* console.log(selectedStore.selectData)
-    console.log('Prop Module', props.item) */
 };
-onMounted(() => {
-    console.log('Item selected', props.item);
-    /* console.log('ModulesItems', selectedStore.project.modules) */
-});
-onBeforeMount(() => {
-    //console.log('Item selected', props.item);
-});
 </script>
 
 <template>
