@@ -1,4 +1,5 @@
 <script setup>
+import { router } from '@/router';
 import axiosServices from '@/utils/axios';
 import { onMounted, ref } from 'vue';
 
@@ -21,19 +22,20 @@ const roles = ref('');
 const roles_data = ref([]);
 const loading = ref(false);
 const loadingRoles = ref(false);
+const message = ref('');
+const snackbar = ref(false);
 
 const handleSubmit = () => {
     const isValid = formRef.value.isValid;
     if (!isValid) {
         //console.log('Invalid form');
-        return
+        return;
     } else {
         submitUser();
     }
 };
 const getRoles = async () => {
-    const response = await axiosServices.get('/roles').
-    catch((error) => {
+    const response = await axiosServices.get('/roles').catch((error) => {
         console.error('Error fetching roles:', error);
         return { data: [] }; // Return empty array on error
     });
@@ -52,12 +54,16 @@ const submitUser = async () => {
         //console.log('User created:', response.data);
     } catch (error) {
         console.error('Error creating user:', error.response?.data || error.message);
+        message.value = error.response?.data?.message || error.message;
+        snackbar.value = true;
     } finally {
         name.value = '';
         email.value = '';
         password.value = '';
         roles.value = '';
         loading.value = false;
+        message.value = 'User created successfully';
+        snackbar.value = true;
     }
 };
 onMounted(async () => {
@@ -71,21 +77,44 @@ onMounted(async () => {
         <v-row>
             <v-col cols="12">
                 <v-label class="font-weight-medium mb-2">Name</v-label>
-                <VTextField :rules="[requiredRule, minLengthRule(3), onlyLettersRule]" v-model="name" type="text" placeholder="John Deo"></VTextField>
+                <VTextField
+                    :rules="[requiredRule, minLengthRule(3), onlyLettersRule]"
+                    v-model="name"
+                    type="text"
+                    placeholder="John Deo"
+                ></VTextField>
             </v-col>
             <v-col cols="12">
                 <v-label class="font-weight-medium mb-2">Email</v-label>
-                <VTextField :rules="[requiredRule, minLengthRule(5)]" v-model="email" type="email" placeholder="john.doe@example.com"></VTextField>
+                <VTextField
+                    :rules="[requiredRule, minLengthRule(5)]"
+                    v-model="email"
+                    type="email"
+                    placeholder="john.doe@example.com"
+                ></VTextField>
             </v-col>
             <v-col cols="12">
                 <v-label class="font-weight-medium mb-2">Role</v-label>
-                <VSelect :rules="[requiredRule]" v-model="roles" :items="roles_data" item-title="name" item-value="name" placeholder="Select Role" :loading="loadingRoles"></VSelect>
+                <VSelect
+                    :rules="[requiredRule]"
+                    v-model="roles"
+                    :items="roles_data"
+                    item-title="name"
+                    item-value="name"
+                    placeholder="Select Role"
+                    :loading="loadingRoles"
+                ></VSelect>
             </v-col>
             <v-col v-if="props.is_create">
                 <v-label class="font-weight-medium mb-2">Password</v-label>
-                <VTextField :rules="[requiredRule, minLengthRule(6)]" v-model="password" type="password" placeholder="Enter password"></VTextField>
+                <VTextField
+                    :rules="[requiredRule, minLengthRule(6)]"
+                    v-model="password"
+                    type="password"
+                    placeholder="Enter password"
+                ></VTextField>
             </v-col>
-           <!--  <v-col v-if="$props.is_create">
+            <!--  <v-col v-if="$props.is_create">
                 <v-label class="font-weight-medium mb-2">Confirm Password</v-label>
                 <VTextField :rules="[requiredRule, minLengthRule(6)]" v-model="password" type="password" placeholder="Confirm password"></VTextField>
             </v-col> -->
@@ -95,4 +124,11 @@ onMounted(async () => {
             <v-btn @click="handleSubmit" :loading="loading" color="primary" class="ma-2">Submit</v-btn>
         </v-card-actions>
     </v-form>
+    <v-snackbar v-model="snackbar" :timeout="3000">
+        {{ message }}
+
+        <template v-slot:actions>
+            <v-btn color="blue" variant="text" @click="snackbar = false"> Close </v-btn>
+        </template>
+    </v-snackbar>
 </template>
