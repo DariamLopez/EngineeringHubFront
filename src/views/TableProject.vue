@@ -27,7 +27,8 @@
                     :items="projects"
                     :search="search"
                     class="border rounded-md"
-                >
+                    
+                > <!-- :row-props="({ item }) => ({ style: { backgroundColor: item.style } })" -->
                     <template v-slot:item.name="{ item }">
                         <span class="mx-2">{{ item.name }}</span>
                         <v-tooltip :text="item.description ? item.description : 'No description available'">
@@ -35,6 +36,16 @@
                                 <v-icon v-bind="props" size="20">mdi-alert-circle-outline</v-icon>
                             </template>
                         </v-tooltip>
+                    </template>
+                    <template v-slot:item.status="{ item }">
+                        <div class="d-flex justify-center" :style="{ 'background-color': item.style}">
+                            <span>
+                            {{ item.status }}
+                        </span>
+                        </div>
+                    </template>
+                    <template v-slot:item.created_at="{ item }">
+                        {{ formatDate(item.created_at) }}
                     </template>
                     <!-- Columna de acciones -->
                     <template v-slot:item.actions="{ item }">
@@ -142,6 +153,8 @@ import { useAuditEventsStore } from '@/stores/auditEvents';
 import { useAuthStore } from '@/stores/auth';
 import axiosServices from '@/utils/axios';
 import { CircleIcon } from 'vue-tabler-icons';
+import { formatDate } from '@/utils/helpers/dateFormat';
+import { statusProject } from '@/enum/enum';
 
 const authStore = useAuthStore();
 
@@ -156,6 +169,7 @@ const ProjectHeaders = [
     { title: 'Client Name', align: 'start', key: 'client_name' },
     { title: 'Created by', align: 'start', key: 'created_by.name' },
     { title: 'Status', align: 'start', key: 'status' },
+    { title: 'Created at', align: 'start', key: 'created_at' },
     { title: 'Actions', align: 'center', key: 'actions' }
 ];
 
@@ -183,8 +197,17 @@ const deleteDialog = async (project) => {
     delete_dialog.value = true;
 };
 async function getProjects() {
-    const response = await axiosServices.get('/projects');
-    return response.data;
+    const response = await axiosServices.get('/projects')
+    .then((res) => {
+        res = res.data.map((item) => {
+                return {
+                    ...item,
+                    style: statusProject.find((status) => status.value === item.status)?.style
+                };
+            });
+        return res;
+    })
+    return response;
 }
 const getModules = async (projectId) => {
     const response = await axiosServices

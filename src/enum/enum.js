@@ -1,4 +1,9 @@
-export const statusProject = ['Draft', 'Discovery', 'Execution', 'Delivered'];
+export const statusProject = [
+    { title: 'Draft', value: 'draft', style: 'red' },
+    { title: 'Discovery', value: 'discovery', style: 'green' },
+    { title: 'Execution', value: 'execution', style: 'blue' },
+    { title: 'Delivered', value: 'delivered', style: 'purple' }
+];
 
 export const statusArtifact = [
     { title: 'Not Started', value: 'not_started' },
