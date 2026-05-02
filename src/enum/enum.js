@@ -1,8 +1,8 @@
 export const statusProject = [
-    { title: 'Draft', value: 'draft', style: 'red' },
-    { title: 'Discovery', value: 'discovery', style: 'green' },
-    { title: 'Execution', value: 'execution', style: 'blue' },
-    { title: 'Delivered', value: 'delivered', style: 'purple' }
+    { title: 'Draft', value: 'draft', style: '#f87171', textColor: '#7f1d1d' },
+    { title: 'Discovery', value: 'discovery', style: '#34d399', textColor: '#064e3b' },
+    { title: 'Execution', value: 'execution', style: '#60a5fa', textColor: '#1e3a5f' },
+    { title: 'Delivered', value: 'delivered', style: '#a78bfa', textColor: '#3b0764' }
 ];
 
 export const statusArtifact = [

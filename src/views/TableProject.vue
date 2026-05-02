@@ -27,8 +27,8 @@
                     :items="projects"
                     :search="search"
                     class="border rounded-md"
-                    
-                > <!-- :row-props="({ item }) => ({ style: { backgroundColor: item.style } })" -->
+                >
+                    <!-- :row-props="({ item }) => ({ style: { backgroundColor: item.style } })" -->
                     <template v-slot:item.name="{ item }">
                         <span class="mx-2">{{ item.name }}</span>
                         <v-tooltip :text="item.description ? item.description : 'No description available'">
@@ -38,11 +38,28 @@
                         </v-tooltip>
                     </template>
                     <template v-slot:item.status="{ item }">
-                        <div class="d-flex justify-center" :style="{ 'background-color': item.style}">
-                            <span>
+                        <!-- <span
+                            :style="{
+                                backgroundColor: item.style,
+                                color: item.textColor,
+                                fontWeight: '600',
+                                fontSize: '0.75rem',
+                                padding: '3px 10px',
+                                borderRadius: '12px',
+                                textTransform: 'capitalize',
+                                letterSpacing: '0.03em',
+                                display: 'inline-block'
+                            }"
+                        >
                             {{ item.status }}
-                        </span>
-                        </div>
+                        </span> -->
+                        <v-chip
+                            :color="item.style"
+                            :text-color="item.textColor"
+                            class="ma-2"
+                            size="large"
+                            label
+                            >{{ item.status }}</v-chip>
                     </template>
                     <template v-slot:item.created_at="{ item }">
                         {{ formatDate(item.created_at) }}
@@ -197,16 +214,17 @@ const deleteDialog = async (project) => {
     delete_dialog.value = true;
 };
 async function getProjects() {
-    const response = await axiosServices.get('/projects')
-    .then((res) => {
+    const response = await axiosServices.get('/projects').then((res) => {
         res = res.data.map((item) => {
-                return {
-                    ...item,
-                    style: statusProject.find((status) => status.value === item.status)?.style
-                };
-            });
+            const match = statusProject.find((status) => status.value === item.status);
+            return {
+                ...item,
+                style: match?.style,
+                textColor: match?.textColor
+            };
+        });
         return res;
-    })
+    });
     return response;
 }
 const getModules = async (projectId) => {
